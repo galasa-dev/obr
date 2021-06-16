@@ -20,6 +20,28 @@
         </dependencies>
 	</dependencyManagement>
 
+            <repositories>
+                <repository>
+                    <id>galasa.source.repo</id>
+                    <url>${galasa.source.repo}</url>
+                </repository>
+                <repository>
+                    <id>central</id>
+                    <url>${galasa.central.repo}</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>galasa.source.repo</id>
+                    <url>${galasa.source.repo}</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>${galasa.central.repo}</url>
+                </pluginRepository>
+            </pluginRepositories>
+
+
 	<build>
 		<pluginManagement>
 			<plugins>
