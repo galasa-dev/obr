@@ -5,9 +5,83 @@
 
 	<groupId>dev.galasa</groupId>
 	<artifactId>galasa-bom</artifactId>
-	<version>0.16.0</version>
+	<version>{{.Release}}</version>
 	<packaging>pom</packaging>
+	
+    <name>Galasa Bill of Materials</name>
 
+    <description>Galasa versions of all the released artifacts</description>
+    <url>https://galasa.dev</url>
+
+    <licenses>
+        <license>
+            <name>Eclipse Public License - v 2.0</name>
+            <url>https://www.eclipse.org/legal/epl-2.0/t</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Michael Baylis</name>
+            <email>Michael.Baylis@uk.ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>William Yates</name>
+            <email>wyates@uk.ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>David Roberts</name>
+            <email>david.roberts@uk.ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>James Davies</name>
+            <email>james.davies@ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Matthew Chivers</name>
+            <email>matthew.chivers@ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Jade Carino</name>
+            <email>jade.carino@ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Charlie Meek</name>
+            <email>charlie.meek@ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Diana Slepikaite</name>
+            <email>diana.slepikaite@ibm.com</email>
+            <organization>IBM</organization>
+            <organizationUrl>https://www.ibm.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/galasa-dev/framework</url>
+        <connection>scm:git:git:://github.com/galasa-dev/framework</connection>
+        <developerConnection>scm:git:git:://github.com/galasa-dev/framework</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/galasa-dev/projectmanagement/issues</url>
+        <system>GitHub</system>
+    </issueManagement>
+    
 	<dependencyManagement>
         <dependencies>
 {{range .Artifacts}}
@@ -28,8 +102,30 @@
 					<artifactId>galasa-maven-plugin</artifactId>
 					<version>0.15.0</version>
 				</plugin>
-			</plugins>
-		</pluginManagement>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            </plugins>
 	</build>
 
 	<distributionManagement>
