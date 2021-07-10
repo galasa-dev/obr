@@ -1,6 +1,6 @@
 ARG baseVersion
 ARG dockerRepository
-FROM ${dockerRepository}/galasadev/galasa-maven-base:${baseVersion}
+FROM ${dockerRepository}/galasadev/galasa-xmaven-base:${baseVersion}
 
 ARG branch
 
