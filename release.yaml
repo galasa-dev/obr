@@ -81,7 +81,7 @@ external:
 
   - group: dev.galasa
     artifact: jta
-    version: 0.1.55 
+    version: 0.1.1
     obr: true
     mvp: true
     isolated: true
