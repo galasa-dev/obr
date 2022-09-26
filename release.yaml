@@ -262,6 +262,4 @@ external:
   - group: org.bouncycastle 
     artifact: bcutil-jdk15on 
     version: 1.69
-<<<<<<< HEAD
-=======
     obr: true
