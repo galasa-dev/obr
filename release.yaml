@@ -270,3 +270,10 @@ external:
     obr: true
     mvp: true
     isolated: true
+
+  - group: org.slf4j.impl
+    artifact: log4j12
+    version: 1.7.2
+    obr: true
+    mvp: true
+    isolated: true
