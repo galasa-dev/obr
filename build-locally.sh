@@ -210,7 +210,7 @@ ${GALASA_BUILD_TOOL_PATH} template \
 '--template' pom.template \
 '--output' pom.xml \
 '--obr' \
-2>&1 
+2>&1 >> ${log_file}
 
 rc=$? 
 if [[ "${rc}" != "0" ]]; then 
@@ -225,7 +225,8 @@ h2 "Building the generated pom.xml to package-up things into an OBR we can publi
 mvn \
 -Dgpg.passphrase=${GPG_PASSPHRASE} \
 -Dgalasa.source.repo=${SOURCE_MAVEN} \
--Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install
+-Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install \
+2>&1 >> ${log_file}
 
 rc=$? ; if [[ "${rc}" != "0" ]]; then 
     error "Failed to push built obr into maven repo ${project}" 
