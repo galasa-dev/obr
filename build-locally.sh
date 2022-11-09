@@ -161,6 +161,22 @@ fi
 # DAEMON_FLAG="--no-daemon"
 DAEMON_FLAG=""
 
+h2 "Checking dependencies are present..."
+declare -a required_files=(
+${WORKSPACE_DIR}/${project}/dev.galasa.uber.obr/pom.template
+${WORKSPACE_DIR}/framework/release.yaml 
+${WORKSPACE_DIR}/extensions/release.yaml 
+${WORKSPACE_DIR}/managers/release.yaml 
+${WORKSPACE_DIR}/obr/release.yaml 
+)
+for required_file in "${required_files[@]}"
+do
+    if [[ -e "${required_file}" ]]; then
+        success "OK - File ${required_file} is present."
+    else 
+        error "File ${required_file} is required, but missing. Clone the sibling project to make sure it exists."
+    fi
+done
 
 h2 "Generating a pom.xml from a template, using all the versions of everything..."
 
