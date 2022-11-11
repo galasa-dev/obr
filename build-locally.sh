@@ -208,6 +208,7 @@ else
         if [[ ! -e ${GALASA_BUILD_TOOL_PATH} ]]; then
             error "Cannot find the $GALASA_BUILD_TOOL_NAME tools on locally built workspace."
             info "Try re-building the buildutils project"
+            exit 1
         else
             info "Using the $GALASA_BUILD_TOOL_NAME tool at ${GALASA_BUILD_TOOL_PATH}"
         fi
