@@ -145,21 +145,10 @@ else
     OPTIONAL_DEBUG_FLAG="-info"
 fi
 
-# auto plain rich or verbose
-CONSOLE_FLAG=--console=plain
 
 log_file=${LOGS_DIR}/${project}.txt
 info "Log will be placed at ${log_file}"
 date > ${log_file}
-
-if [[ "${build_type}" == "clean" ]]; then
-    goals="clean build publishToMavenLocal"
-else
-    goals="clean build publishToMavenLocal"
-fi
-
-# DAEMON_FLAG="--no-daemon"
-DAEMON_FLAG=""
 
 h2 "Checking dependencies are present..."
 declare -a required_files=(
@@ -197,8 +186,35 @@ EOF
 
 cd ${WORKSPACE_DIR}/${project}/dev.galasa.uber.obr
 
+# What's the architecture-variable name of the build tool we want for this local build ?
 export ARCHITECTURE=$(uname -m) # arm64 or amd64
 export GALASA_BUILD_TOOL_NAME=galasabld-darwin-${ARCHITECTURE}
+
+# Favour the galasabld tool if it's on the path, else use a locally-built version or fail if not available.
+GALASABLD_ON_PATH=$(which galasabld)
+rc=$?
+if [[ "${rc}" == "0" ]]; then
+    info "Using the 'galasabld' tool which is on the PATH"
+    GALASA_BUILD_TOOL_PATH=${GALASABLD_ON_PATH}
+else
+    GALASABLD_ON_PATH=$(which $GALASA_BUILD_TOOL_NAME)
+    rc=$?
+    if [[ "${rc}" == "0" ]]; then
+        info "Using the '$GALASA_BUILD_TOOL_NAME' tool which is on the PATH"
+        GALASA_BUILD_TOOL_PATH=${GALASABLD_ON_PATH}
+    else
+        info "The galasa build tool 'galasabld' or '$GALASA_BUILD_TOOL_NAME' is not on the path."
+        export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
+        if [[ ! -e ${GALASA_BUILD_TOOL_PATH} ]]; then
+            error "Cannot find the $GALASA_BUILD_TOOL_NAME tools on locally built workspace."
+            info "Try re-building the buildutils project"
+        else
+            info "Using the $GALASA_BUILD_TOOL_NAME tool at ${GALASA_BUILD_TOOL_PATH}"
+        fi
+    fi
+fi
+
+# Check local build version
 export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
 info "Using galasabld tool ${GALASA_BUILD_TOOL_PATH}"
 
@@ -218,7 +234,6 @@ if [[ "${rc}" != "0" ]]; then
     exit 1 
 fi
 success "pom.xml built ok - log is at ${log_file}"
-
 
 
 h2 "Building the generated pom.xml to package-up things into an OBR we can publish..."
