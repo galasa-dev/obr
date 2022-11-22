@@ -87,12 +87,12 @@
 				<configuration>
 					<failOnError>false</failOnError>
                     <debug>false</debug>
-                    <classpath>${project.build.directory}/classes</classpath>
 					<sourcepath>${project.build.directory}/sources</sourcepath>
 					<excludePackageNames>*.ivt:*.internal.*:*.internal:dev.galasa.framework.maven.repository.spi:OSGI-OPT.*</excludePackageNames>
                     <additionalOptions>
                         -classpath
                         '${project.build.directory}/classes'
+                        --frames
                     </additionalOptions>
 					<tags>
                         <tag>
