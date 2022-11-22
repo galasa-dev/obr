@@ -283,7 +283,7 @@ success "OK - pom.xml file created at ${WORKSPACE_DIR}/obr/javadocs/pom.xml"
 h2 "Building the javadoc with maven"
 #------------------------------------------------------------------------------------
 cd ${WORKSPACE_DIR}/obr/javadocs
-mvn clean install -X \
+mvn clean install \
 --settings ${WORKSPACE_DIR}/obr/settings.xml \
 --batch-mode \
 --errors \
