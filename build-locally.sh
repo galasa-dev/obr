@@ -287,11 +287,11 @@ mvn clean install \
 --settings ${WORKSPACE_DIR}/obr/settings.xml \
 --batch-mode \
 --errors \
---fail-at-end \
 -Dgpg.skip=true \
 -Dgalasa.source.repo=${SOURCE_MAVEN} \
 -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ \
--Dmaven.javadoc.failOnError=true
+-Dmaven.javadoc.failOnError=true \
+2>&1 | tee -a ${log_file}
 
 rc=$? ; if [[ "${rc}" != "0" ]]; then error "maven failed for javadoc build" ;  exit 1 ; fi
 

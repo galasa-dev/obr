@@ -153,6 +153,28 @@
 					</tags>
 				</configuration>
 			</plugin>
+
+            <!-- jszip.js has a security vulnerability which needs fixing. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <configuration> 
+                            <target>
+                                <copy file="${basedir}/javadocs/patches/jszip/3.10.1/jszip.js" todir="${basedir}/target/site/apidocs/jquery/jszip"/>
+                                <copy file="${basedir}/javadocs/patches/jszip/3.10.1/jszip.min.js" todir="${basedir}/target/site/apidocs/jquery/jszip"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            <plugin>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
