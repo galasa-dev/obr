@@ -109,7 +109,7 @@ function update_release_yaml {
     # It's on the line after the line containing 'release:'
     # The line we need to change looks like this: version: 0.29.0
     is_line_supressed=false
-    while IFS='\n' read -r line
+    while IFS= read -r line
     do
         regex="^.*release[ ]*:[ ]*$"
         if [[ "$line" =~ $regex ]]; then
