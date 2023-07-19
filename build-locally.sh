@@ -335,8 +335,6 @@ function build_javadoc_pom {
 # rc=$? ; if [[ "${rc}" != "0" ]]; then error "Failed to create the docker image containing the javadoc" ;  exit 1 ; fi
 # success "OK"
 
-<<<<<<< HEAD
-=======
 read_component_version
 download_dependencies
 
@@ -348,5 +346,4 @@ h1 "Building the javadoc using the OBR..."
 generate_javadoc_pom_xml
 build_javadoc_pom
 
->>>>>>> main
 success "Project ${project} built - OK - log is at ${log_file}"

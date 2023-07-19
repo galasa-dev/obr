@@ -166,5 +166,5 @@ mkdir -p $temp_dir
 update_release_yaml ${BASEDIR}/release.yaml $temp_dir/release.yaml $temp_dir
 
 update_dependency_versions $temp_dir
->>>>>>> main
+
 
