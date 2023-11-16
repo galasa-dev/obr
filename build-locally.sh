@@ -212,8 +212,40 @@ function construct_obr_pom_xml {
     cd ${WORKSPACE_DIR}/${project}/dev.galasa.uber.obr
 
     # What's the architecture-variable name of the build tool we want for this local build ?
-    export ARCHITECTURE=$(uname -m) # arm64 or amd64
-    export GALASA_BUILD_TOOL_NAME=galasabld-darwin-${ARCHITECTURE}
+    os=$(uname -o)
+
+
+    # Turn the os into lower-case.
+    case "$os" in
+        "Darwin"):
+            os="darwin"
+        ;;
+        "Linux"):
+            os="linux"
+        ;;
+    "GNU/Linux"):
+        os="linux"
+        ;;
+        "Windows"):
+            os="windows"
+        ;;
+        "Msys"):
+            os="windows"
+        ;;
+        *)
+            error "Unknown machine architecture $os"
+            exit 1
+        ;;
+    esac
+    info "OS is $os"
+    if [[ "${os}" == "windows" ]]; then
+        export GALASA_BUILD_TOOL_NAME=galasabld-windows-amd64
+    else
+        export ARCHITECTURE=$(uname -m) # arm64 or amd64
+        export GALASA_BUILD_TOOL_NAME=galasabld-darwin-${ARCHITECTURE}
+    fi
+    
+    
 
     # Favour the galasabld tool if it's on the path, else use a locally-built version or fail if not available.
     GALASABLD_ON_PATH=$(which galasabld)
