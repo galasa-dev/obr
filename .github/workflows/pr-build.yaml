@@ -230,7 +230,7 @@ jobs:
             context: .
             file: ${{github.workspace}}/obr/dockerfiles/dockerfile.javadocmavenrepo
             load: true
-            tags: javadocmavenrepo:test
+            tags: javadoc-maven-artefacts:test
             build-args: |
               dockerRepository=${{env.REGISTRY}}
-              tag=latest
+              baseVersion=latest
