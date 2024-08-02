@@ -297,7 +297,7 @@ jobs:
 
       - name: Copy files from kubectl image for Galasa boot embedded images
         run: |
-          docker run --rm -v ${{ github.workspace }}:/var/root/ ghcr.io/galasa-dev/kubectl:main cp -vr /opt/k8s/bin/kubectl 
+          docker run --entrypoint /bin/sh --rm -v ${{ github.workspace }}:/var/root/ ghcr.io/galasa-dev/kubectl:main cp -vr /opt/k8s/bin/kubectl 
           var/root/obr/dockerfiles/trace-log4j.properties 
           var/root/obr/obr-generic/
 
@@ -314,6 +314,7 @@ jobs:
             dockerRepository=harbor.galasa.dev
             jdkImage=harbor.galasa.dev/docker_proxy_cache/library/openjdk:11
 
+      # Commented out for now until the FROM image is on GHCR, currently it is not.
       # - name: Build Galasa IBM boot embedded image for testing
       #   uses: docker/build-push-action@v5
       #   with:
