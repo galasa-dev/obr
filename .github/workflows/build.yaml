@@ -407,7 +407,7 @@ jobs:
 
       - name: Copy files from kubectl image for Galasa boot embedded images
         run: |
-          docker run --entrypoint /bin/sh --rm -v ${{ github.workspace }}:/var/root/ ghcr.io/galasa-dev/kubectl:main cp -vr /opt/k8s/bin/kubectl 
+          docker run --entrypoint /bin/bash --rm -v ${{ github.workspace }}:/var/root/ ghcr.io/galasa-dev/kubectl:main cp -vr /opt/k8s/bin/kubectl 
           var/root/obr/dockerfiles/trace-log4j.properties 
           var/root/obr/obr-generic/
 
