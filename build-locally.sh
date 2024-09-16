@@ -80,12 +80,6 @@ LOGS_DIR :
     Controls where logs are placed.
     Optional. Defaults to creating a new temporary folder
 
-GPG_PASSPHRASE :
-    Mandatory.
-    Controls how the obr is signed. Needs to be the alias of the private key of a
-    public-private gpg pair. eg: For development you could use your signing github
-    passphrase.
-
 EOF
 }
 
@@ -116,11 +110,6 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [[ -z $GPG_PASSPHRASE ]]; then
-    error "Environment variable GPG_PASSPHRASE needs to be set."
-    usage
-    exit 1
-fi
 
 #-----------------------------------------------------------------------------------------
 # Main logic.
@@ -351,7 +340,6 @@ function build_generated_bom_pom {
     mvn \
     --settings ${WORKSPACE_DIR}/obr/settings.xml \
     -Dgpg.skip=true \
-    -Dgpg.passphrase=${GPG_PASSPHRASE} \
     -Dgalasa.source.repo=${SOURCE_MAVEN} \
     -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install \
     2>&1 >> ${log_file}
@@ -371,7 +359,6 @@ function build_generated_uber_obr_pom {
     mvn \
     --settings ${WORKSPACE_DIR}/obr/settings.xml \
     -Dgpg.skip=true \
-    -Dgpg.passphrase=${GPG_PASSPHRASE} \
     -Dgalasa.source.repo=${SOURCE_MAVEN} \
     -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install \
     2>&1 >> ${log_file}
