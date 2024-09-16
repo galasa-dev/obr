@@ -5,7 +5,7 @@ plugins {
 
 // Note: The following version number is updated using the set-version.sh tool.
 // It is used as the version number of the managers bundle, which contains a yaml
-// file which is in a release.yaml, but published to maven, so that the OBR build 
+// file which is in a release.yaml, but published to maven, so that the OBR build
 // can pick it up later.
 version = "0.37.0"
 
@@ -22,6 +22,8 @@ repositories {
 dependencies {
     runtimeOnly group: 'dev.galasa', name: 'dev.galasa.managers.manifest', version: version, ext: "yaml"
     runtimeOnly group: 'dev.galasa', name: 'dev.galasa.framework.manifest', version: version, ext: "yaml"
+    runtimeOnly group: 'dev.galasa', name: 'dev.galasa.extensions.manifest', version: version, ext: "yaml"
+
 }
 
 // Download all the files we depend upon.
