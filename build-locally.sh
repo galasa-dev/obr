@@ -80,12 +80,6 @@ LOGS_DIR :
     Controls where logs are placed.
     Optional. Defaults to creating a new temporary folder
 
-GPG_PASSPHRASE :
-    Mandatory.
-    Controls how the obr is signed. Needs to be the alias of the private key of a
-    public-private gpg pair. eg: For development you could use your signing github
-    passphrase.
-
 EOF
 }
 
@@ -93,9 +87,9 @@ function check_exit_code () {
     # This function takes 3 parameters in the form:
     # $1 an integer value of the returned exit code
     # $2 an error message to display if $1 is not equal to 0
-    if [[ "$1" != "0" ]]; then 
-        error "$2" 
-        exit 1  
+    if [[ "$1" != "0" ]]; then
+        error "$2"
+        exit 1
     fi
 }
 
@@ -116,11 +110,6 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [[ -z $GPG_PASSPHRASE ]]; then
-    error "Environment variable GPG_PASSPHRASE needs to be set."
-    usage
-    exit 1
-fi
 
 #-----------------------------------------------------------------------------------------
 # Main logic.
@@ -276,7 +265,7 @@ function construct_bom_pom_xml {
 
 
     # Check local build version
-    export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
+    #export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
     info "Using galasabld tool ${GALASA_BUILD_TOOL_PATH}"
 
     cmd="${GALASA_BUILD_TOOL_PATH} template \
@@ -306,7 +295,7 @@ function construct_uber_obr_pom_xml {
     cd ${WORKSPACE_DIR}/${project}/dev.galasa.uber.obr
 
     # Check local build version
-    export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
+    #export GALASA_BUILD_TOOL_PATH=${WORKSPACE_DIR}/buildutils/bin/${GALASA_BUILD_TOOL_NAME}
     info "Using galasabld tool ${GALASA_BUILD_TOOL_PATH}"
 
     cmd="${GALASA_BUILD_TOOL_PATH} template \
@@ -349,7 +338,8 @@ function build_generated_bom_pom {
     cd ${BASEDIR}/galasa-bom
 
     mvn \
-    -Dgpg.passphrase=${GPG_PASSPHRASE} \
+    --settings ${WORKSPACE_DIR}/obr/settings.xml \
+    -Dgpg.skip=true \
     -Dgalasa.source.repo=${SOURCE_MAVEN} \
     -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install \
     2>&1 >> ${log_file}
@@ -367,7 +357,8 @@ function build_generated_uber_obr_pom {
     cd ${BASEDIR}/dev.galasa.uber.obr
 
     mvn \
-    -Dgpg.passphrase=${GPG_PASSPHRASE} \
+    --settings ${WORKSPACE_DIR}/obr/settings.xml \
+    -Dgpg.skip=true \
     -Dgalasa.source.repo=${SOURCE_MAVEN} \
     -Dgalasa.central.repo=https://repo.maven.apache.org/maven2/ install \
     2>&1 >> ${log_file}
@@ -425,21 +416,21 @@ function check_secrets {
     h2 "updating secrets baseline"
     cd ${BASEDIR}
     detect-secrets scan --update .secrets.baseline
-    rc=$? 
-    check_exit_code $rc "Failed to run detect-secrets. Please check it is installed properly" 
+    rc=$?
+    check_exit_code $rc "Failed to run detect-secrets. Please check it is installed properly"
     success "updated secrets file"
 
     h2 "running audit for secrets"
     detect-secrets audit .secrets.baseline
-    rc=$? 
+    rc=$?
     check_exit_code $rc "Failed to audit detect-secrets."
-    
+
     #Check all secrets have been audited
     secrets=$(grep -c hashed_secret .secrets.baseline)
     audits=$(grep -c is_secret .secrets.baseline)
-    if [[ "$secrets" != "$audits" ]]; then 
+    if [[ "$secrets" != "$audits" ]]; then
         error "Not all secrets found have been audited"
-        exit 1  
+        exit 1
     fi
     success "secrets audit complete"
 
